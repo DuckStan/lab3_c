@@ -34,7 +34,7 @@ int dialog(const char* msgs[], int N)
 void extand(lab3::Hex*& Hex, int& n) {
 	lab3::Hex* tmp = Hex;
 	Hex = new lab3::Hex[++n];
-	for (int i = 0; i < n-1; i++)
+	for (int i = 0; i < n - 1; i++)
 		Hex[i] = tmp[i];
 	delete[] tmp;
 }
@@ -85,6 +85,7 @@ int main()
 				std::cout << "0 Numbers in array." << std::endl;
 				break;
 			}
+			std::cout << "Enter index of number to be deleted:" << std::endl;
 			i1 = getindex_in_range(0, n);
 			delete_f(Hex, n, i1 - 1);
 			break;
@@ -98,7 +99,13 @@ int main()
 			i1 = getindex_in_range(0, n);
 			std::cout << "choose the second number:" << std::endl;
 			i2 = getindex_in_range(0, n);
-			Hex[i1 - 1] = Hex[i1 - 1].add(Hex[i2 - 1]);
+			try {
+				Hex[i1 - 1] = Hex[i1 - 1].add(Hex[i2 - 1]);
+			}
+			catch(std::exception &a) {
+				std::cout << a.what() << std::endl;
+			}
+			Hex[i1 - 1].print(std::cout);
 			break;
 		}
 		case 4: {
@@ -111,7 +118,12 @@ int main()
 			std::cout << "choose the second number:" << std::endl;
 			i2 = getindex_in_range(0, n);
 
-			Hex[i1 - 1] = Hex[i1 - 1].subtract(Hex[i2 - 1]);
+			try {
+				Hex[i1 - 1] = Hex[i1 - 1].subtract(Hex[i2 - 1]);
+			}
+			catch (std::exception& a) {
+				std::cout << a.what() << std::endl;
+			}
 			break;
 		}
 		case 5: {

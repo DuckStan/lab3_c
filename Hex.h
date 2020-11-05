@@ -8,10 +8,10 @@ namespace lab3 {
 	private:
 		static const int SZ = 10;
 		int len;
-		char* hex;
-		char *form_sm;
-		char *form_1;
-		char *form_2;
+		char* hex=nullptr;
+		char *form_sm=nullptr;
+		char *form_1=nullptr;
+		char *form_2=nullptr;
 		int set_forms();
 		int set_hex(char *hex_value);
 		int set_forms_backwards();
@@ -24,10 +24,14 @@ namespace lab3 {
 		Hex(Hex&&) noexcept;
 		//destructor
 		~Hex() {
-			delete[] hex;
-			delete[] form_1;
-			delete[] form_2;
-			delete[] form_sm;
+			if (hex != nullptr)
+				delete[] hex;
+			if (form_sm != nullptr)
+				delete[] form_sm;
+			if (form_1 != nullptr)
+				delete[] form_1;
+			if (form_2 != nullptr)
+				delete[] form_2;
 		}
 		//copy and displace operators
 		Hex& operator =(const Hex&);
@@ -52,7 +56,7 @@ namespace lab3 {
 		std::ostream & print(std::ostream&) const;
 		friend std::ostream& operator <<(std::ostream& s, Hex& st);
 
-		Hex& add(Hex b) const;
+		Hex& add(const Hex &b) const;
 		Hex& operator +(Hex) const;
 
 		Hex& subtract(Hex b) const;

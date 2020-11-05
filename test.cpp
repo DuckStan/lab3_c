@@ -110,16 +110,6 @@ TEST(HexConstructor, InitialiserConstructor_integer_negative) {
 		EXPECT_EQ(outform_2[i], test_form_2[i]);
 	}
 }
-TEST(HexConstructor, InitialiserConstructor_exceptions_char_overload) {
-	char tmp[] = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
-	char* tmp_x = tmp;
-	try {
-		ASSERT_ANY_THROW(lab3::Hex a(tmp_x));
-	}
-	catch(std::exception& ex){
-		std::cout << ex.what() << std::endl;
-	}
-}
 TEST(HexConstructor, InitialiserConstructor_exceptions_char_invalid_characters) {
 	char tmp_k[] = "TTTTTTTTTTTTTTTTTTTTTTTTTT";
 	char* tmp_y = tmp_k;
