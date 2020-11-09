@@ -7,20 +7,12 @@
 #include <string.h>
 
 namespace lab3 {
-	Hex::Hex() : hex(new char[3]), form_sm(new char[6]), form_1(new char[6]), form_2(new char[6]) {
+	Hex::Hex() : hex(new char[3]){
 		len = 1;
 	
 		hex[0] = '+';
 		hex[len] = '0';
-		for(int i=0;i<len*4; i++){
-			form_sm[i] = '0';
-			form_1[i] = '0';
-			form_2[i] = '0';
-		}
 		hex[len+1] = '\0';
-		form_sm[len*4+1] = '\0';
-		form_1[len*4+1] = '\0';
-		form_2[len*4+1] = '\0';
 	}
 	char int_to_hex(int value) {
 		switch(value){
@@ -95,32 +87,12 @@ namespace lab3 {
 		}
 	}
 	
-	int Hex::set_forms() {
+	char* Hex::set_forms() {
 		const char holder[] = "0000000100100011010001010110011110001001101010111100110111101111";
-		
-		
-		if (form_sm == nullptr)
-			form_sm = new char[len * 4 + 2];
-		else {
-			delete[] form_sm;
-			form_sm = new char[len * 4 + 2];
-		}
-			
-
-		if (form_1 == nullptr)
-			form_1 = new char[len * 4 + 2];
-		else {
-			delete[] form_1;
-			form_1 = new char[len * 4 + 2];
-		}
-
-		if (form_2 == nullptr)
-			form_2 = new char[len * 4 + 2];
-		else {
-			delete[] form_2;
-			form_2 = new char[len * 4 + 2];
-		}
-
+	
+		char *form_sm = new char[len * 4 + 2];
+		char* form_1 = new char[len * 4 + 2];
+		char* form_2 = new char[len * 4 + 2];
 		if (hex[0] == '+') form_sm[0] = '0'; else form_sm[0] = '1';
 		int s = 0, k=1; 
 
@@ -160,7 +132,11 @@ namespace lab3 {
 		form_2[len * 4 + 1] = '\0';
 		int i = 0;
 		i = len * 4;
-		if (form_sm[0] == '0') return 0;
+		if (form_sm[0] == '0') {
+			delete[] form_sm;
+			delete[] form_1;
+			return form_2;
+		} 
 		while (i>0) {
 			if (form_1[i] == '1') {
 				form_2[i] = '0';
@@ -172,7 +148,11 @@ namespace lab3 {
 				break;
 			}
 		}
-		return 0;
+		
+		delete[] form_sm;
+		delete[] form_1;
+		
+		return form_2;
 	}
 	Hex::Hex(int hex_value) {
 		 int tmp = hex_value;
@@ -190,7 +170,7 @@ namespace lab3 {
 
 		int j = 1;
 		tmp = fabs(tmp);
-		char* tmp_1;
+		char* tmp_1=nullptr;
 		while(1) {
 			len++;
 			tmp_1 = fake_hex;
@@ -215,7 +195,6 @@ namespace lab3 {
 				hex[i+1] = fake_hex[len - i];
 			} */
 			hex = fake_hex;
-			set_forms();
 		}
 	}
 	int Hex::set_hex(char* hex_value) {
@@ -281,48 +260,24 @@ namespace lab3 {
 		catch (std::exception &ex) {
 			throw std::exception(ex.what());
 		}
-		set_forms();
 	}
 	Hex::Hex(const Hex& a):len(a.len) {
 		hex = new char[len+2];
-		form_sm = new char[len*4+2];
-		form_1 = new char[len * 4 + 2];
-		form_2 = new char[len * 4 + 2];
-		for (int i = 0; i < len * 4 + 1; i++) {
-			if (i <= len + 1)
-				hex[i] = a.hex[i];
-			form_sm[i] = a.form_sm[i];
-			form_1[i] = a.form_1[i];
-			form_2[i] = a.form_2[i];
+		for (int i = 0; i < len + 2; i++) {
+			hex[i] = a.hex[i];
 		}
 	}
-	Hex::Hex(Hex&& a) noexcept: len(a.len), hex(a.hex), form_sm(a.form_sm), form_1(a.form_1), form_2(a.form_2) {
+	Hex::Hex(Hex&& a) noexcept: len(a.len), hex(a.hex){
 		a.hex = nullptr;
-		a.form_sm = nullptr;
-		a.form_1 = nullptr;
-		a.form_2 = nullptr;
 	}
 	Hex& Hex::operator =(const Hex& b) { //copy
 		if (this != &b) {
 			len = b.len;
 			if( hex !=nullptr)
 				delete[] hex;
-			if(form_sm!=nullptr)
-				delete[] form_sm;
-			if(form_1 !=nullptr)
-				delete[] form_1;
-			if(form_2!=nullptr)
-				delete[] form_2;
 			hex = new char[len + 2];
-			form_sm = new char[len * 4 + 2];
-			form_1 = new char[len * 4 + 2];
-			form_2 = new char[len * 4 + 2];
-			for (int i = 0; i < len * 4 + 1; i++) {
-				if (i <= len + 1)
-					hex[i] = b.hex[i];
-				form_sm[i] = b.form_sm[i];
-				form_1[i] = b.form_1[i];
-				form_2[i] = b.form_2[i];
+			for (int i = 0; i < len + 2; i++) {
+				hex[i] = b.hex[i];
 			}
 		}
 		return *this;
@@ -335,15 +290,6 @@ namespace lab3 {
 		char* ptr = hex;
 		hex = a.hex;
 		a.hex = ptr;
-		ptr = form_sm;
-		form_sm = a.form_sm;
-		a.form_sm = ptr;
-		ptr = form_1;
-		form_1 = a.form_1;
-		a.form_1 = ptr;
-		ptr = form_2;
-		form_2 = a.form_2;
-		a.form_2 = ptr;
 		return *this;
 	}
 	Hex& Hex::input(std::istream& s) {
@@ -358,7 +304,6 @@ namespace lab3 {
 		catch (std::exception& ex) {
 			std::cout << ex.what() << std::endl;
 		} 
-		set_forms();
 		return *this;
 	}
 
@@ -371,7 +316,6 @@ namespace lab3 {
 			}
 			hex[i] = hex[i + n];
 		}
-		set_forms();
 		return *this;
 	}
 
@@ -397,7 +341,6 @@ namespace lab3 {
 		if (condition == 1) {
 			len--;
 		}
-		set_forms();
 		return *this;
 		
 	}
@@ -443,10 +386,11 @@ namespace lab3 {
 			return 'F';
 		}
 	}
-	int Hex::set_forms_backwards() {
+	int Hex::set_forms_backwards(char *form_2) {
 		const char holder[] = "0000000100100011010001010110011110001001101010111100110111101111";
 		
-		
+		char* form_1 = new char[len * 4 + 2];
+		char* form_sm = new char[len * 4 + 2];
 
 		for (int i = 0; i < len*4+1; i++) {
 			form_1[i] = form_2[i];
@@ -510,7 +454,6 @@ namespace lab3 {
 		int i = 0;
 		Hex* c=new Hex[1];
 		Hex b(d);
-
 		if (tmp.len > b.len) {
 			b = b.shift_right(tmp.len - b.len, 1);
 			i = tmp.len * 4+1;
@@ -529,59 +472,63 @@ namespace lab3 {
 				}
 			}
 		}
-		
-		
+		char* c_form_2 = new char[i + 1], * tmp_form_2 = nullptr, * b_form_2 = nullptr;
+
+		tmp_form_2 = tmp.set_forms();
+		b_form_2 = b.set_forms();
 		int v_ume = 0;
 		while (i >= 0) {
-			if ((tmp.form_2[i] == '1') && (b.form_2[i] == '1') && (v_ume == 1)) {
-				c->form_2[i] = '1';
+			if ((tmp_form_2[i] == '1') && (b_form_2[i] == '1') && (v_ume == 1)) {
+				c_form_2[i] = '1';
 				v_ume = 1;
 				i--;
 				continue;
 			}
-			if ((((tmp.form_2[i] == '0') && (b.form_2[i] == '1')) || ((tmp.form_2[i] == '1') && (b.form_2[i] == '0'))) && (v_ume == 1)) {
-				c->form_2[i] = '0';
+			if ((((tmp_form_2[i] == '0') && (b_form_2[i] == '1')) || ((tmp_form_2[i] == '1') && (b_form_2[i] == '0'))) && (v_ume == 1)) {
+				c_form_2[i] = '0';
 				v_ume = 1;
 				i--;
 				continue;
 			}
-			if ((tmp.form_2[i] == '0') && (b.form_2[i] == '0') && (v_ume == 1)) {
-				c->form_2[i] = '1';
+			if ((tmp_form_2[i] == '0') && (b_form_2[i] == '0') && (v_ume == 1)) {
+				c_form_2[i] = '1';
 				v_ume = 0;
 				i--;
 				continue;
 			}
-			if ((tmp.form_2[i] == '1') && (b.form_2[i] == '1')) {
-				c->form_2[i] = '0';
+			if ((tmp_form_2[i] == '1') && (b_form_2[i] == '1')) {
+				c_form_2[i] = '0';
 				v_ume = 1;
 				i--;
 				continue;
 			}
-			if ((tmp.form_2[i] == '0') && (b.form_2[i] == '0')) {
-				c->form_2[i] = '0';
+			if ((tmp_form_2[i] == '0') && (b_form_2[i] == '0')) {
+				c_form_2[i] = '0';
 				i--;
 				continue;
 			}
-			if ((((tmp.form_2[i] == '0') && (b.form_2[i] == '1')) || ((tmp.form_2[i] == '1') && (b.form_2[i] == '0')))) {
-				c->form_2[i] = '1';
+			if ((((tmp_form_2[i] == '0') && (b_form_2[i] == '1')) || ((tmp_form_2[i] == '1') && (b_form_2[i] == '0')))) {
+				c_form_2[i] = '1';
 				i--;
 				continue;
 			}
-			c->form_2[i] = '\0';
+			c_form_2[i] = '\0';
 			i--;
 		}
-		if ((tmp.form_2[0] == '0') && (b.form_2[0] == '0') && (c->form_2[0] == '1'))
+		if ((tmp_form_2[0] == '0') && (b_form_2[0] == '0') && (c_form_2[0] == '1'))
 			throw std::exception("Overload detected!");
-		if ((tmp.form_2[0] == '1') && (b.form_2[0] == '1') && (c->form_2[0] == '0'))
+		if ((tmp_form_2[0] == '1') && (b_form_2[0] == '1') && (c_form_2[0] == '0'))
 			throw std::exception("Overload detected!");
-		c->set_forms_backwards();
+		c->set_forms_backwards(c_form_2);
 		
+		delete[] tmp_form_2;
+		delete[] b_form_2;
+		delete[] c_form_2;
 		return *c;
 	}
 	Hex& Hex::subtract(Hex b) const {
 		Hex *c = new Hex[1];
 		if (b.hex[0] == '-') b.hex[0] = '+'; else b.hex[0] = '-';;
-		b.set_forms();
 		try {
 			*c = this->add(b);
 		}
@@ -629,11 +576,14 @@ namespace lab3 {
 	int Hex::comp(Hex b) const {
 		int sum_1 = 0, sum_2 = 0;
 		Hex tmp(*this);
+		if ((b.hex[0] == '-') && (tmp.hex[0] == '+')) return 1;
+		if ((b.hex[0] == '+') && (tmp.hex[0] == '-')) return 2;
+
 		for (int i = 1; i <= tmp.len; i++) {
 			sum_1 += hex_to_int(tmp.hex[i]) * pow(16, tmp.len - i);
 		}
 		for (int i = 1; i <= b.len; i++) {
-			sum_2 += hex_to_int(b.hex[i]) * pow(16, tmp.len - i);
+			sum_2 += hex_to_int(b.hex[i]) * pow(16, b.len - i);
 		}
 		if (sum_1 > sum_2) return 1;
 		if (sum_1 < sum_2) return 2;
@@ -647,21 +597,6 @@ namespace lab3 {
 	void Hex::getHex(char *outstr) const {
 		for (int i = 0; i < len + 1; i++) {
 			outstr[i] = hex[i];
-		}
-	}
-	void Hex::get_form_sm(char* outstr) const {
-		for (int i = 0; i < len*4 + 1; i++) {
-			outstr[i] = form_sm[i];
-		}
-	}
-	void Hex::get_form_1(char* outstr) const {
-		for (int i = 0; i < len*4 + 1; i++) {
-			outstr[i] = form_1[i];
-		}
-	}
-	void Hex::get_form_2(char* outstr) const {
-		for (int i = 0; i < len*4 + 1; i++) {
-			outstr[i] = form_2[i];
 		}
 	}
 	std::istream& operator >>(std::istream& s, Hex& a) {

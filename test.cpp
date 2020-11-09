@@ -3,112 +3,57 @@
 
 TEST(HexConstructor, DefaultConstructor) {
 	lab3::Hex a;
-	char outHex[3] , zeros[3] = "+0", outform_sm[5], outform_1[5], outform_2[5], zeros_1[5]="0000";
-	char* tmp_1 = outHex, *tmp_2=outform_sm, *tmp_3 = outform_1, *tmp_4 = outform_2;
+	char outHex[3], zeros[3] = "+0";
+	char* tmp_1 = outHex;
 	a.getHex(tmp_1);
-	a.get_form_sm(tmp_2);
-	a.get_form_1(tmp_3);
-	a.get_form_2(tmp_4);
 	for (int i = 0; i < 2; i++) {
 		EXPECT_EQ(outHex[i], zeros[i]);
 	}
-	for (int i = 0; i < 4; i++) {
-		EXPECT_EQ(outform_sm[i], zeros_1[i]);
-	}
-	for (int i = 0; i < 4; i++) {
-		EXPECT_EQ(outform_1[i], zeros_1[i]);
-	}
-	for (int i = 0; i < 4; i++) {
-		EXPECT_EQ(outform_2[i], zeros_1[i]);
-	}
+
 }
 TEST(HexConstructor, InitialiserConstructor_positive_char) {
 	char tmp[] = "A";
 	char* tmp_x = tmp;
 	lab3::Hex a(tmp_x);
-	char outHex[3], test_hex[3] = "+A", outform_sm[6], outform_1[6], outform_2[6], test_form_sm[6] = "01010", test_form_1[6] = "01010", test_form_2[6] = "01010" ;
-	char* tmp_1 = outHex, * tmp_2 = outform_sm, * tmp_3 = outform_1, * tmp_4 = outform_2;
+	char outHex[3], test_hex[3] = "+A";
+	char* tmp_1 = outHex;
 	a.getHex(tmp_1);
-	a.get_form_sm(tmp_2);
-	a.get_form_1(tmp_3);
-	a.get_form_2(tmp_4);
 	for (int i = 0; i < 2; i++) {
 		EXPECT_EQ(outHex[i], test_hex[i]);
 	}
-	for (int i = 0; i < 5; i++) {
-		EXPECT_EQ(outform_sm[i], test_form_sm[i]);
-	}
-	for (int i = 0; i < 5; i++) {
-		EXPECT_EQ(outform_1[i], test_form_1[i]);
-	}
-	for (int i = 0; i < 5; i++) {
-		EXPECT_EQ(outform_2[i], test_form_2[i]);
-	}
+
 }
 TEST(HexConstructor, InitialiserConstructor_negative_char) {
 	char tmp[] = "-A";
 	char* tmp_x = tmp;
 	lab3::Hex a(tmp_x);
-	char outHex[3], test_hex[3] = "-A", outform_sm[6], outform_1[6], outform_2[6], test_form_sm[6] = "11010", test_form_1[6] = "10101", test_form_2[6] = "10110";
-	char* tmp_1 = outHex, * tmp_2 = outform_sm, * tmp_3 = outform_1, * tmp_4 = outform_2;
+	char outHex[3], test_hex[3] = "-A";
+	char* tmp_1 = outHex;
 	a.getHex(tmp_1);
-	a.get_form_sm(tmp_2);
-	a.get_form_1(tmp_3);
-	a.get_form_2(tmp_4);
 	for (int i = 0; i < 2; i++) {
 		EXPECT_EQ(outHex[i], test_hex[i]);
 	}
-	for (int i = 0; i < 5; i++) {
-		EXPECT_EQ(outform_sm[i], test_form_sm[i]);
-	}
-	for (int i = 0; i < 5; i++) {
-		EXPECT_EQ(outform_1[i], test_form_1[i]);
-	}
-	for (int i = 0; i < 5; i++) {
-		EXPECT_EQ(outform_2[i], test_form_2[i]);
-	}
+	
 }
 TEST(HexConstructor, InitialiserConstructor_integer_positive) {
 	lab3::Hex a(1);
-	char outHex[3], test_hex[3] = "+1", outform_sm[6], outform_1[6], outform_2[6], test_form_sm[6] = "00001", test_form_1[6] = "00001", test_form_2[6] = "00001";
-	char* tmp_1 = outHex, * tmp_2 = outform_sm, * tmp_3 = outform_1, * tmp_4 = outform_2;
+	char outHex[3], test_hex[3] = "+1";
+	char* tmp_1 = outHex;
 	a.getHex(tmp_1);
-	a.get_form_sm(tmp_2);
-	a.get_form_1(tmp_3);
-	a.get_form_2(tmp_4);
 	for (int i = 0; i < 2; i++) {
 		EXPECT_EQ(outHex[i], test_hex[i]);
 	}
-	for (int i = 0; i < 5; i++) {
-		EXPECT_EQ(outform_sm[i], test_form_sm[i]);
-	}
-	for (int i = 0; i < 5; i++) {
-		EXPECT_EQ(outform_1[i], test_form_1[i]);
-	}
-	for (int i = 0; i < 5; i++) {
-		EXPECT_EQ(outform_2[i], test_form_2[i]);
-	}
+
 }
 TEST(HexConstructor, InitialiserConstructor_integer_negative) {
 	lab3::Hex a(-1);
-	char outHex[3], test_hex[3] = "-1", outform_sm[6], outform_1[6], outform_2[6], test_form_sm[6] = "10001", test_form_1[6] = "11110", test_form_2[6] = "11111";
-	char* tmp_1 = outHex, * tmp_2 = outform_sm, * tmp_3 = outform_1, * tmp_4 = outform_2;
+	char outHex[3], test_hex[3] = "-1";
+	char* tmp_1 = outHex;
 	a.getHex(tmp_1);
-	a.get_form_sm(tmp_2);
-	a.get_form_1(tmp_3);
-	a.get_form_2(tmp_4);
 	for (int i = 0; i < 2; i++) {
 		EXPECT_EQ(outHex[i], test_hex[i]);
 	}
-	for (int i = 0; i < 5; i++) {
-		EXPECT_EQ(outform_sm[i], test_form_sm[i]);
-	}
-	for (int i = 0; i < 5; i++) {
-		EXPECT_EQ(outform_1[i], test_form_1[i]);
-	}
-	for (int i = 0; i < 5; i++) {
-		EXPECT_EQ(outform_2[i], test_form_2[i]);
-	}
+	
 }
 TEST(HexConstructor, InitialiserConstructor_exceptions_char_invalid_characters) {
 	char tmp_k[] = "TTTTTTTTTTTTTTTTTTTTTTTTTT";

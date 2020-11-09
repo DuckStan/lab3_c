@@ -9,12 +9,9 @@ namespace lab3 {
 		static const int SZ = 10;
 		int len;
 		char* hex=nullptr;
-		char *form_sm=nullptr;
-		char *form_1=nullptr;
-		char *form_2=nullptr;
-		int set_forms();
+		char* set_forms();
 		int set_hex(char *hex_value);
-		int set_forms_backwards();
+		int set_forms_backwards(char* form_2);
 	public:
 		//constructors
 		Hex();
@@ -26,12 +23,6 @@ namespace lab3 {
 		~Hex() {
 			if (hex != nullptr)
 				delete[] hex;
-			if (form_sm != nullptr)
-				delete[] form_sm;
-			if (form_1 != nullptr)
-				delete[] form_1;
-			if (form_2 != nullptr)
-				delete[] form_2;
 		}
 		//copy and displace operators
 		Hex& operator =(const Hex&);
